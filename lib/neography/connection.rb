@@ -68,7 +68,7 @@ module Neography
           req_params = {:method => action.to_sym, :path => path, :body => query_body, :headers => headers}
           is_streaming = headers && (headers['X-Stream'] == true)
           if is_streaming
-            streamer = lambda { |chunk, _, _| stream += chunk }
+            streamer = lambda { |chunk, _, _| stream.concat(chunk) }
             req_params.merge!({:persistent => false, :response_block => streamer,
                                :read_timeout => 100000000, :write_timeout => 100000000})
           end
